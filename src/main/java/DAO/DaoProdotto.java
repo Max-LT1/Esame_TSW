@@ -51,7 +51,7 @@ public class DaoProdotto {
     }
 
     //Metodo per ottenere una lista completa di prodotti
-    public List<Prodotto> listaProdotti() throws SQLException {
+    public List<Prodotto> listaProdottiAdmn() throws SQLException {
         String query = "SELECT * FROM prodotto";
         try(Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement(query);
@@ -168,6 +168,39 @@ public class DaoProdotto {
             }
         }
         return null;
+    }
+
+    public List<Prodotto> ListaProdotti() throws SQLException{
+        String query = "SELECT * FROM prodotto";
+        try(Connection connection = dataSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement(query);
+        ResultSet resultSet = statement.executeQuery()){
+            List<Prodotto> prodotti = new ArrayList<>();
+            while(resultSet.next()){
+                Prodotto prodotto = new Prodotto();
+                prodotto.setIdProdotto(resultSet.getInt("ID_prodotto"));
+                prodotto.setNomeProdotto(resultSet.getString("nome_prodotto"));
+                prodotto.setPrezzo(resultSet.getBigDecimal("prezzo"));
+                prodotto.setCategoria(resultSet.getString("categoria"));
+                prodotto.setTipo(resultSet.getString("tipo"));
+                prodotto.setMateriale(resultSet.getString("materiale"));
+                prodotto.setIva(resultSet.getInt("iva_p"));
+                prodotto.setDescrizione(resultSet.getString("descrizione"));
+                prodotto.setPath_immagine(resultSet.getString("path_immagine"));
+                prodotto.setDataInserimento(null);
+                prodotti.add(prodotto);
+            }
+            return prodotti;
+        }
+    }
+
+    public void deliteProduct(Prodotto p) throws SQLException {
+        String query = "DELETE FROM prodotto WHERE ID_prodotto = ?";
+        try(Connection connection = dataSource.getConnection();
+        PreparedStatement statement = connection.prepareStatement(query);){
+            statement.setInt(1, p.getIdProdotto());
+            statement.execute();
+        }
     }
 
     public void update(Prodotto p) throws SQLException {
