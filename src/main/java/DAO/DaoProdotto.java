@@ -50,7 +50,7 @@ public class DaoProdotto {
         }
     }
 
-    //Metodo per ottenere una lista completa di prodotti
+    //Metodo per ottenere una lista completa di prodotti con la data di inserimento per gli Admin
     public List<Prodotto> listaProdottiAdmn() throws SQLException {
         String query = "SELECT * FROM prodotto";
         try(Connection connection = dataSource.getConnection();
@@ -169,7 +169,7 @@ public class DaoProdotto {
         }
         return null;
     }
-
+    //prendere prodotti Per clienti
     public List<Prodotto> ListaProdotti() throws SQLException{
         String query = "SELECT * FROM prodotto";
         try(Connection connection = dataSource.getConnection();
@@ -191,15 +191,6 @@ public class DaoProdotto {
                 prodotti.add(prodotto);
             }
             return prodotti;
-        }
-    }
-
-    public void deliteProduct(Prodotto p) throws SQLException {
-        String query = "DELETE FROM prodotto WHERE ID_prodotto = ?";
-        try(Connection connection = dataSource.getConnection();
-        PreparedStatement statement = connection.prepareStatement(query);){
-            statement.setInt(1, p.getIdProdotto());
-            statement.execute();
         }
     }
 
