@@ -19,8 +19,8 @@ public class DaoProdotto {
     }
     //creare un prodotto
     public void createProdotto(Prodotto prodotto) throws SQLException {
-        String query = "INSERT INTO prodotto (ID_Prodotto, nome_Prodotto, prezzo, descrizione, categoria, tipo, iva_p, materiale, path_immagine, data_inserto) " +
-                "VALUES (? ? ? ? ? ? ? ? ?)";
+        String query = "INSERT INTO prodotto (ID_Prodotto, nome_Prodotto, prezzo, descrizione, categoria, tipo, iva_p, materiale, path_immagine, data_inserto, sconto) " +
+                "VALUES (? ? ? ? ? ? ? ? ? ?)";
         try(Connection connection = dataSource.getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, prodotto.getIdProdotto());
             statement.setString(2, prodotto.getNomeProdotto());
@@ -32,6 +32,7 @@ public class DaoProdotto {
             statement .setString(8, prodotto.getMateriale());
             statement.setString(9, prodotto.getPath_immagine());
             statement.setDate(10, (Date) prodotto.getDataInserimento());
+            statement.setInt(11, prodotto.getSconto());
             statement.execute();
         }
         catch (SQLException ex) {
@@ -69,6 +70,7 @@ public class DaoProdotto {
                 prodotto.setDescrizione(resultSet.getString("descrizione"));
                 prodotto.setPath_immagine(resultSet.getString("path_immagine"));
                 prodotto.setDataInserimento(resultSet.getDate("data_Inserimento"));
+                prodotto.setSconto(resultSet.getInt("sconto"));
                 prodotti.add(prodotto);
             }
             return prodotti;
@@ -93,6 +95,7 @@ public class DaoProdotto {
                 prodotto.setDescrizione(resultSet.getString("descrizione"));
                 prodotto.setPath_immagine(resultSet.getString("path_immagine"));
                 prodotto.setDataInserimento(resultSet.getDate("data_Inserimento"));
+                prodotto.setSconto(resultSet.getInt("sconto"));
                 prodotti.add(prodotto);
             }
             return prodotti;
@@ -117,6 +120,7 @@ public class DaoProdotto {
                 prodotto.setDescrizione(resultSet.getString("descrizione"));
                 prodotto.setPath_immagine(resultSet.getString("path_immagine"));
                 prodotto.setDataInserimento(resultSet.getDate("data_Inserimento"));
+                prodotto.setSconto(resultSet.getInt("sconto"));
                 prodotti.add(prodotto);
             }
             return prodotti;
@@ -140,6 +144,7 @@ public class DaoProdotto {
                 p.setDescrizione(resultSet.getString("descrizione"));
                 p.setPath_immagine(resultSet.getString("path_immagine"));
                 p.setDataInserimento(resultSet.getDate("Data_inserimento"));
+                p.setSconto(resultSet.getInt("sconto"));
                 return p;
             }
             //prodotto non trovato
@@ -164,6 +169,7 @@ public class DaoProdotto {
                 p.setDescrizione(resultSet.getString("descrizione"));
                 p.setPath_immagine(resultSet.getString("path_immagine"));
                 p.setDataInserimento(resultSet.getDate("Data_inserimento"));
+                p.setSconto(resultSet.getInt("sconto"));
                 return p;
             }
         }
@@ -187,6 +193,7 @@ public class DaoProdotto {
                 prodotto.setIva(resultSet.getInt("iva_p"));
                 prodotto.setDescrizione(resultSet.getString("descrizione"));
                 prodotto.setPath_immagine(resultSet.getString("path_immagine"));
+                prodotto.setSconto(resultSet.getInt("sconto"));
                 prodotto.setDataInserimento(null);
                 prodotti.add(prodotto);
             }
@@ -195,7 +202,7 @@ public class DaoProdotto {
     }
 
     public void update(Prodotto p) throws SQLException {
-        String query = "UPDATE prodotto SET ID_prodotto = ?, nome_prodotto = ?, prezzo = ?, descrizione = ?, categoria = ?, tipo = ?, iva_p = ?, materiale = ?, path_immagine = ?, data_Inserimento = ? WHERE id_prodotto = ?";
+        String query = "UPDATE prodotto SET ID_prodotto = ?, nome_prodotto = ?, prezzo = ?, descrizione = ?, categoria = ?, tipo = ?, iva_p = ?, materiale = ?, path_immagine = ?, data_Inserimento = ?, sconto = ? WHERE id_prodotto = ?";
         try(Connection connection = dataSource.getConnection();
         PreparedStatement statement = connection.prepareStatement(query);){
             statement.setInt(1, p.getIdProdotto());
@@ -208,8 +215,7 @@ public class DaoProdotto {
             statement.setString(8, p.getMateriale());
             statement.setString(9, p.getPath_immagine());
             statement.setDate(10, (Date) p.getDataInserimento());
-            statement.setInt(11, p.getIdProdotto());
-
+            statement.setInt(11, p.getSconto());
         }
     }
 }
