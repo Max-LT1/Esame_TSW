@@ -14,10 +14,11 @@ public class Prodotto {
     private String categoria;
     private String tipo;
     private Date dataInserimento;
+    private int sconto;
 
     public Prodotto(){}
 
-    public Prodotto(String descrizione, int idProdotto, double iva, String nomeProdotto, String path_immagine, BigDecimal prezzo, String materiale, String categoria, String tipo, Date dataInserimento) {
+    public Prodotto(String descrizione, int idProdotto, double iva, String nomeProdotto, String path_immagine, BigDecimal prezzo, String materiale, String categoria, String tipo, Date dataInserimento, int sconto) {
         this.descrizione = descrizione;
         this.idProdotto = idProdotto;
         this.iva = iva;
@@ -28,6 +29,7 @@ public class Prodotto {
         this.categoria = categoria;
         this.tipo = tipo;
         this.dataInserimento = dataInserimento;
+        this.sconto = sconto;
     }
 
     public String getDescrizione() {
@@ -107,5 +109,11 @@ public class Prodotto {
     }
     public Date getDataInserimento() {
         return dataInserimento;
+    }
+    public int getSconto() {
+        return sconto;
+    }
+    public void setSconto(int sconto){
+        this.sconto = sconto;
     }
 }

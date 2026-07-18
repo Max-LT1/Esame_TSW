@@ -22,11 +22,11 @@
         <input type="text" placeholder="Cerca..." class="searchbar">
     </div>
     <nav class="nav-links">
-        <a href="#">Armi</a>
-        <a href="#">Armature</a>
-        <a href="#">Scudi</a>
-        <a href="#">Accessori</a>
-        <a href="#">Contatti</a>
+        <a href="ContextCheck?Cat=Armi">Armi</a>
+        <a href="ContextCheck?Cat=Armatura">Armature</a>
+        <a href="ContextCheck?Cat=Scudi">Scudi</a>
+        <a href="ContextCheck?Cat=Accessori">Accessori</a>
+        <a href="ContextCheck?nome=Contatti">Contatti</a>
     </nav>
     <div class="user-area">
         <span class="icon-user" id="user-icon">👤</span>
