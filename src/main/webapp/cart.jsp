@@ -17,6 +17,98 @@
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="styles/cart.css">
     <link rel="stylesheet" href="styles/search-bar.css">
+
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // Funzione unica per inviare i dati alla Servlet tramite Fetch API
+            function aggiornaQuantitaServer(prodottoId, nuovaQuantita, elementoErrore) {
+                if (elementoErrore) elementoErrore.textContent = '';
+
+                fetch('AggiornaCarrello', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        quantita: nuovaQuantita,
+                        prodottoId: prodottoId
+                    })
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Errore nel salvataggio');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.success) {
+                            // Reindirizza alla servlet che mostra il carrello aggiornato
+                            window.location.href = 'cart.jsp';
+                        } else {
+                            if (elementoErrore) elementoErrore.textContent = data.message;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Errore:', error);
+                        if (elementoErrore) elementoErrore.textContent = 'Errore durante l\'aggiornamento del carrello.';
+                    });
+            }
+
+            // 1. Gestione della modifica manuale dell'input numerico
+            document.querySelectorAll('.quantity-input').forEach(input => {
+                input.addEventListener('change', function() {
+                    var articolo = this.closest('.cart-item');
+                    var prodottoId = articolo.getAttribute('data-product-id');
+                    var quantita = parseInt(this.value);
+                    var errorText = articolo.querySelector('.error-text');
+
+                    if (isNaN(quantita) || quantita < 1 || quantita > 10) {
+                        if (errorText) errorText.textContent = 'La quantità deve essere maggiore di 1 e minore di 11.';
+                        this.value = 1; // Reset di sicurezza
+                        return;
+                    }
+
+                    aggiornaQuantitaServer(prodottoId, quantita, errorText);
+                });
+            });
+
+            // 2. Gestione del click sul bottone Aumenta (+)
+            document.querySelectorAll('.increase-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    var articolo = this.closest('.cart-item');
+                    var prodottoId = articolo.getAttribute('data-product-id');
+                    var input = articolo.querySelector('.quantity-input');
+                    var errorText = articolo.querySelector('.error-text');
+                    var attuale = parseInt(input.value);
+
+                    if (attuale < 10) {
+                        aggiornaQuantitaServer(prodottoId, nuovaQuantita, errorText);
+                    } else {
+                        if (errorText) errorText.textContent = 'Massimo 10 articoli consentiti.';
+                    }
+                });
+            });
+
+            // 3. Gestione del click sul bottone Diminuisci (-)
+            document.querySelectorAll('.decrease-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    var articolo = this.closest('.cart-item');
+                    var prodottoId = articolo.getAttribute('data-product-id');
+                    var input = articolo.querySelector('.quantity-input');
+                    var errorText = articolo.querySelector('.error-text');
+                    var attuale = parseInt(input.value);
+
+                    if (attuale > 1) {
+                        aggiornaQuantitaServer(prodottoId, nuovaQuantita, errorText);
+                    } else {
+                        if (errorText) errorText.textContent = 'La quantità minima è 1.';
+                    }
+                });
+            });
+        });
+    </script>
+
 </head>
 
 <div id="confirmationModal" class="confirmation-modal hidden" role="dialog" aria-modal="true" aria-labelledby="confirmationTitle">
@@ -56,6 +148,7 @@
         </a>
     </div>
 </header>
+
 <!-- OVERLAY UTENTE -->
 <div id="user-overlay" class="overlay hidden" role="dialog" aria-label="Area utente">
     <div class="overlay-content">
@@ -72,7 +165,7 @@
     </div>
     <div class="overlay-actions">
         <a class="overlay-button primary" href="user-area.jsp">Visualizza profilo</a>
-        <form action="LogoutServlet" method="post">
+        <form action="logoutServ" method="post">
             <button type="submit" class="overlay-button danger">Logout</button>
         </form>
     </div>
@@ -259,7 +352,7 @@
                     </span>
                     <!-- DINAMICO -->
                     <span id="cartTotal">
-                        € 149,70
+
                     </span>
                 </div>
             </div>

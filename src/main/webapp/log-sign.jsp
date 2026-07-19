@@ -73,7 +73,7 @@
                 Accedi al tuo account per continuare.
             </p>
             <!-- LoginServlet-->
-            <form id="loginForm" action="" method="post">
+            <form id="loginForm" action="loginServ" method="post">
                 <div class="input-group">
                     <label for="loginEmail">
                         Email
@@ -132,7 +132,7 @@
                 Compila i campi per creare il tuo account.
             </p>
             <!-- RegisterServlet-->
-            <form id="registerForm" action="" method="post">
+            <form id="registerForm" action="RegistrazioneServ" method="post">
                 <div class="row">
                     <div class="input-group">
                         <label for="registerName">

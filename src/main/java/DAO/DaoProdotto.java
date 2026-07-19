@@ -253,6 +253,32 @@ public List<Prodotto> getAllSconto() throws SQLException{
         }
     }
 
+    public List<Prodotto> getLatestadds(){
+        String query = "SELECT * FROM prodotto WHERE data_Inserimento >=NOW() - INTERVAL 4 MONTH";
+        try(Connection connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();){
+            List<Prodotto> prodotti = new ArrayList<>();
+            while(resultSet.next()){
+                Prodotto prodotto = new Prodotto();
+                prodotto.setIdProdotto(resultSet.getInt("ID_prodotto"));
+                prodotto.setNomeProdotto(resultSet.getString("nome_prodotto"));
+                prodotto.setPrezzo(resultSet.getBigDecimal("prezzo"));
+                prodotto.setCategoria(resultSet.getString("categoria"));
+                prodotto.setTipo(resultSet.getString("tipo"));
+                prodotto.setMateriale(resultSet.getString("materiale"));
+                prodotto.setIva(resultSet.getInt("iva_p"));
+                prodotto.setDescrizione(resultSet.getString("descrizione"));
+                prodotto.setPath_immagine(resultSet.getString("path_immagine"));
+                prodotto.setSconto(resultSet.getInt("sconto"));
+                prodotto.setDataInserimento(null);
+                prodotti.add(prodotto);
+            }
+            return prodotti;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public void update(Prodotto p) throws SQLException {
         String query = "UPDATE prodotto SET ID_prodotto = ?, nome_prodotto = ?, prezzo = ?, descrizione = ?, categoria = ?, tipo = ?, iva_p = ?, materiale = ?, path_immagine = ?, data_Inserimento = ?, sconto = ? WHERE id_prodotto = ?";

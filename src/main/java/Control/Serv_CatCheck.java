@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet
+@WebServlet("/notSameAsBefore")
 public class Serv_CatCheck extends HttpServlet {
     private DataSource dataSource;
     private DaoProdotto daoProdotto;

@@ -2,6 +2,7 @@ package Control;
 
 
 import DAO.ClienteDAO;
+import DAO.DBConnection;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -9,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Client;
 
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -16,8 +18,8 @@ import java.sql.SQLIntegrityConstraintViolationException;
 @WebServlet("/RegistrazioneServ")
 public class Serv_register extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    ClienteDAO clienteDAO;
-
+    private ClienteDAO clienteDAO;
+    private DataSource dataSource;
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String username = request.getParameter("username");
@@ -46,5 +48,11 @@ public class Serv_register extends HttpServlet {
             }
         }
 
+    }
+
+    @Override
+    public void init() throws ServletException {
+        dataSource = DBConnection.getDataSource();
+        clienteDAO = new ClienteDAO(dataSource);
     }
 }

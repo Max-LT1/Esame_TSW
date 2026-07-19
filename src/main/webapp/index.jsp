@@ -27,10 +27,10 @@
     </form>
     <nav class="nav-links">
         <a href="index.jsp" class="navbar-logo">Home</a>
-        <a href="codex.jsp?tipo=armi">Armi</a>
-        <a href="codex.jsp?tipo=armature">Armature</a>
-        <a href="codex.jsp?tipo=scudi">Scudi</a>
-        <a href="codex.jsp?tipo=accessori">Accessori</a>
+        <a href="ContextCheck2?tipo=armi">Armi</a>
+        <a href="ContextCheck2?tipo=armature">Armature</a>
+        <a href="ContextCheck2?tipo=scudi">Scudi</a>
+        <a href="ContextCheck2?tipo=accessori">Accessori</a>
         <a href="contacts.jsp">Contatti</a>
     </nav>
     <div class="user-area">

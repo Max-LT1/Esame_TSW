@@ -44,13 +44,16 @@ public class Serv_product extends HttpServlet {
             req.setAttribute("Lista", prodotti);
         }
         if(servletPath.equals("/HomePage")){
-            List<Prodotto> prodotti;
+            List<Prodotto> prodottiScontati;
+            List<Prodotto> Nuoviprodotti;
             try {
-                prodotti = daoProdotto.getAllSconto();
+                prodottiScontati = daoProdotto.getAllSconto();
+                Nuoviprodotti = daoProdotto.getLatestadds();
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-            req.setAttribute("ListaSconti", prodotti);
+            req.setAttribute("ListaSconti", prodottiScontati);
+            req.setAttribute("Nuoviprodotti", Nuoviprodotti);
             req.getRequestDispatcher("/index.jsp").forward(req, resp);
         }
         if(servletPath.equals("/AdmCat")){

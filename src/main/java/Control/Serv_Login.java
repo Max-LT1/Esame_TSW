@@ -25,60 +25,84 @@ public class Serv_Login extends HttpServlet {
     private DataSource ds;
     private DaoComposizione daoComposizione;
 
-    public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        String username = req.getParameter("Username");
-        String email = req.getParameter("Email");
-        String password = req.getParameter("Password");
-        List<Composizione> carrello = null;
-        HttpSession session = req.getSession();
-        Client client;
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String clientename = request.getParameter("username");
+        String password = request.getParameter("password");
+        String email = request.getParameter("email");
+        HttpSession session = request.getSession();
+        // Perform authentication logic here (e.g., checking against a database)
+        Client cliente = null;
+        List<Composizione> carrelloItems = null;
+
         try {
-            client = clienteDAO.getClienteByUsername(username);
+            cliente = clienteDAO.getClienteByUsernamePassword(clientename, password);
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            String errorMessage = "There was an error during the login, try again";
+            response.sendError(500, errorMessage);
+
+            return;
         }
-        if (client != null) {
-            try{
-                carrello = daoComposizione.getComposizioniByUsernameAndEmail(client.getUsername(), client.getEmail());
+
+
+        if (cliente != null) {
+
+            try {
+                carrelloItems = daoComposizione.getComposizioniByUsernameAndEmail(cliente.getUsername(),
+                        cliente.getEmail());
             } catch (SQLException e) {
-                String error = "Errore per il carrello, riprova";
-                res.sendError(500, error);
-                throw new RuntimeException(e);
+                String errorMessage = "There was an error during the retrieval of your carrello items, try again";
+                response.sendError(500, errorMessage);
+                return;
+            }
+            // Get the guest carrello from the guest session
+            List<Composizione> guestCart = (List<Composizione>) session.getAttribute("guestCart");
+
+            // Get the cliente carrello from the session or create a new carrello if it
+            // doesn't exist
+            if (carrelloItems == null) {
+                carrelloItems = new ArrayList<>();
             }
 
-            List<Composizione> guestCart = (List<Composizione>) session.getAttribute("guestCart");
-            if(carrello==null){
-                carrello = new ArrayList<>();
-            }
-            if (guestCart != null && !carrello.isEmpty()) {
-                for(Composizione Gcomposizione : guestCart){
-                    Boolean prod = false;
-                    for(Composizione ClientComposizione : carrello){
-                        if(ClientComposizione.getIdProdotto() == Gcomposizione.getIdProdotto()){
-                            ClientComposizione.setQuantita_prodotto(ClientComposizione.getQuantita_prodotto() + Gcomposizione.getQuantita_prodotto());
-                            prod = true;
+            if (guestCart != null && !guestCart.isEmpty()) {
+                for (Composizione guestComposizione : guestCart) {
+                    boolean productExists = false;
+                    for (Composizione clienteComposizione : carrelloItems) {
+                        if (guestComposizione.getIdProdotto() == clienteComposizione.getIdProdotto()) {
+                            // Update the quantity of the existing carrello item
+                            clienteComposizione.setQuantita_prodotto((clienteComposizione.getQuantita_prodotto()
+                                    + guestComposizione.getQuantita_prodotto()));
+                            productExists = true;
                             break;
                         }
                     }
-                    if(!prod){
-                        Gcomposizione.setUsername(client.getUsername());
-                        Gcomposizione.setEmail(client.getEmail());
-                        carrello.add(Gcomposizione);
+                    if (!productExists) {
+                        // Add the guest carrello item as a new carrello item
+                        guestComposizione.setUsername(cliente.getUsername());
+                        guestComposizione.setEmail(cliente.getEmail());
+                        carrelloItems.add(guestComposizione);
                     }
                 }
             }
-            session.removeAttribute("guestCart");
-            session.setAttribute("carrello", carrello);
-            String sessionToken = UUID.randomUUID().toString();
-            session.setAttribute("sessionToken", sessionToken);
-            session.setAttribute("Cliente",  client);
 
-            res.sendRedirect("");
-        }
-        else{
-            String errorM = "Username o password non validi";
-            req.setAttribute("errorMessage", errorM);
-            req.getRequestDispatcher("Log-sign.jsp").forward(req, res);
+            // Remove the guest carrello from the session
+            session.removeAttribute("guestCart");
+
+            // Save the updated cliente carrello in the session
+            session.setAttribute("carrello", carrelloItems);
+
+            String sessionToken = UUID.randomUUID().toString();
+
+            session.setAttribute("cliente", cliente);
+            session.setAttribute("sessionToken", sessionToken);
+
+            // Redirect to a protected resource or home page
+            response.sendRedirect("HomePage");
+        } else {
+
+            String errorMessage = "Username o password non validi";
+            request.setAttribute("errorMessage", errorMessage);
+            request.getRequestDispatcher("log-sign.jsp").forward(request, response);
+
         }
     }
 
