@@ -26,6 +26,7 @@
             <button class="arrow left">&#9664;</button>
             <div class="carousel" id="carousel1">
                 <%
+                    String contextPath = request.getContextPath();
                     List<Prodotto> prodottiNuovi = (List<Prodotto>) request.getAttribute("NuoviProdotti");
                 %>
                 <%
@@ -38,14 +39,16 @@
                 <%
                     for (Prodotto prodotto : prodottiNuovi) {
                 %>
-                <div class="product tall skew" >
-                    <div class="product-name">
-                        <%= prodotto.getNomeProdotto()%>
+                <a href="<%= contextPath %>/SingleItem?id=<%= prodotto.getIdProdotto()%>">
+                    <div class="product tall skew" >
+                        <div class="product-name">
+                            <%= prodotto.getNomeProdotto()%>
+                        </div>
+                        <div class="product-price">
+                            <%= prodotto.getPrezzo()%>>
+                        </div>
                     </div>
-                    <div class="product-price">
-                        <%= prodotto.getPrezzo()%>>
-                    </div>
-                </div>
+                </a>
                 <% }
                     }%>
             </div>
@@ -72,14 +75,16 @@
                 <%
                     for (Prodotto prodotto : prodottiScontati) {
                 %>
-                <div class="product tall skew">
-                    <div class="product-name">
-                        <%= prodotto.getNomeProdotto()%>
+                <a href="<%= contextPath %>/SingleItem?id=<%= prodotto.getIdProdotto()%>">
+                    <div class="product tall skew">
+                        <div class="product-name">
+                            <%= prodotto.getNomeProdotto()%>
+                        </div>
+                        <div class="product-prezzo">
+                            <%= prodotto.getPrezzo()%>
+                        </div>
                     </div>
-                    <div class="product-prezzo">
-                        <%= prodotto.getPrezzo()%>
-                    </div>
-                </div>
+                </a>
                 <% }
                     }%>
             </div>
@@ -94,9 +99,6 @@
 
 <!-- CAROSELLO -->
 <script src="scripts/carosello.js"></script>
-
-<!-- PRODOTTI -->
-<script src="scripts/prodotto.js"></script>
 
 </body>
 </html>
