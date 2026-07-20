@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
 
-@WebServlet({"/HomePage", "/ContextCheck", "/AdmCat"})
+@WebServlet({"/HomePage", "/ContextCheck", "/AdmCat", "/SingleItem"})
 public class Serv_product extends HttpServlet {
     private DataSource dataSource;
     private DaoProdotto daoProdotto;
@@ -44,6 +44,9 @@ public class Serv_product extends HttpServlet {
                     break;
                 case "/AdmCat":
                     //TODO
+                    break;
+                case "/SingleItem":
+                    singleItem(req, resp);
                     break;
                 default:
                     //TODO
@@ -82,5 +85,12 @@ public class Serv_product extends HttpServlet {
         req.setAttribute("ListaSconti", daoProdotto.getAllSconto());
         req.setAttribute("NuoviProdotti", daoProdotto.getLatestadds());
         req.getRequestDispatcher("/index.jsp").forward(req, resp);
+    }
+
+    private void singleItem(HttpServletRequest req, HttpServletResponse resp)
+            throws SQLException, ServletException, IOException {
+        String s = req.getAttribute("NomeProdotto").toString();
+        Prodotto p = daoProdotto.getProdottoByNome(s);
+        req.setAttribute("prodotto", p);
     }
 }
