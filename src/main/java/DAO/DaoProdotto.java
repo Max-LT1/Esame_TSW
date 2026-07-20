@@ -9,10 +9,12 @@ import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
+import com.mysql.cj.jdbc.MysqlDataSource;
 import model.Prodotto;
 
 public class DaoProdotto {
     private DataSource dataSource;
+    public DaoProdotto() {}
 
     public DaoProdotto(DataSource dataSource) {
         this.dataSource = dataSource;
