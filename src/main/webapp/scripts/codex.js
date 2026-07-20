@@ -56,6 +56,5 @@ document.addEventListener("DOMContentLoaded", () => {
             applyFilter(button.dataset.filter);
         });
     });
-
     updateCount(products.length);
 });

@@ -212,10 +212,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const carrelloVuoto = prodotti.length === 0;
 
+        /*Devo capire
         cartItemsContainer?.classList.toggle(
             "hidden",
             carrelloVuoto
         );
+        */
 
         emptyCart?.classList.toggle(
             "hidden",
