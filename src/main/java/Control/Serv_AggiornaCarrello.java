@@ -29,10 +29,12 @@ public class Serv_AggiornaCarrello extends HttpServlet {
         int prodottoId = json.get("prodottoId").getAsInt();
         HttpSession session = request.getSession();
 
+        Client client = (Client) session.getAttribute("cliente");
+
         List<Composizione> carrello = null;
-        if((Client) session.getAttribute("cliente") == null){
-            carrello = (List<Composizione>) session.getAttribute("guessCarrello");
-            session.setAttribute("guessCarrello", carrello);
+
+        if(client == null){
+            carrello = (List<Composizione>) session.getAttribute("carrelloNoLog");
         }else{
             carrello = (List<Composizione>) session.getAttribute("carrello");
         }
@@ -40,7 +42,7 @@ public class Serv_AggiornaCarrello extends HttpServlet {
             for(Composizione cartItem : carrello){
                 if(cartItem.getIdProdotto() == prodottoId){
                     if(cartItem.getQuantita_prodotto() < 1){
-                        String errorMessage = "Invalid quanitity found, min 1, max 10";
+                        String errorMessage = "Invalid quanitity found, min 1, max 99";
                         request.setAttribute("errorMessage", errorMessage);
                         request.getRequestDispatcher("/cart.jsp").forward(request, response);
                     }
@@ -49,15 +51,16 @@ public class Serv_AggiornaCarrello extends HttpServlet {
                 }
             }
         }
-        if((Client) session.getAttribute("cliente") == null){
-            session.setAttribute("guessCarrello", carrello);
-        }else {
+
+        if (client == null) {
+            session.setAttribute("carrelloNoLog", carrello);
+        } else {
             session.setAttribute("carrello", carrello);
         }
+
         JsonObject responseJson = new JsonObject();
         responseJson.addProperty("success", true);
         String json2 = new Gson().toJson(responseJson);
-
         response.setContentType("application/json");
         response.getWriter().write(json2);
     }

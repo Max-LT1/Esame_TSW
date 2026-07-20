@@ -22,8 +22,6 @@ public class Serv_AggiungiCarrello extends HttpServlet {
     private static final long serialVersionUID = 6L;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        // 1. Poiché il JS invia un JSON in POST, dobbiamo leggere il body della richiesta
         StringBuilder sb = new StringBuilder();
         String line;
         try (BufferedReader reader = request.getReader()) {
@@ -32,27 +30,24 @@ public class Serv_AggiungiCarrello extends HttpServlet {
             }
         }
 
-        // Parsing del JSON (Assicurati di avere una libreria tipo Gson, Jackson o org.json)
         JsonObject json = JsonParser.parseString(sb.toString()).getAsJsonObject();
         int productId = json.get("prodottoId").getAsInt();
         int quantita = json.get("quantita").getAsInt();
 
         HttpSession session = request.getSession();
 
-        // Controllo validità (il JS accetta da 1 a 10)
-        if (quantita <= 0 || quantita > 10) {
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().write("{\"success\": false, \"message\": \"Quantità non valida\"}");
+        if (quantita <= 0 || quantita > 99) {
+            String errorMessage = "quantita non valida";
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, errorMessage);
             return;
         }
 
-        // Recupero il carrello corretto (Ospite o Loggato)
-        Client client = (Client) session.getAttribute("cliente"); // Nota: nel tuo codice usavi sia "client" che "cliente"
-        List<Composizione> carrello;
+        Client client = (Client) session.getAttribute("cliente");
+
+        List<Composizione> carrello = null;
 
         if (client == null) {
-            carrello = (List<Composizione>) session.getAttribute("guestCart");
+            carrello = (List<Composizione>) session.getAttribute("carrelloNoLog");
         } else {
             carrello = (List<Composizione>) session.getAttribute("carrello");
         }
@@ -65,9 +60,6 @@ public class Serv_AggiungiCarrello extends HttpServlet {
         for (Composizione composizione : carrello) {
             if (composizione.getIdProdotto() == productId) {
                 productExists = true;
-
-                // --- CORREZIONE CRUCIALI ---
-                // Impostiamo direttamente la quantità totale inviata dal JS, senza sommarla!
                 composizione.setQuantita_prodotto(quantita);
                 break;
             }
@@ -84,14 +76,12 @@ public class Serv_AggiungiCarrello extends HttpServlet {
             carrello.add(newComposizione);
         }
 
-        // Salviamo nuovamente in sessione
         if (client == null) {
-            session.setAttribute("guestCart", carrello);
+            session.setAttribute("carrelloNoLog", carrello);
         } else {
             session.setAttribute("carrello", carrello);
         }
 
-        // Ritorna una risposta JSON di successo come si aspetta il JS (.then(data => data.success))
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write("{\"success\": true}");
