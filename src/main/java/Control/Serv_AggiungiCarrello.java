@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import model.Client;
 import model.Composizione;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser; // O qualunque libreria usi per i JSON
+import com.google.gson.JsonParser;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,10 +30,20 @@ public class Serv_AggiungiCarrello extends HttpServlet {
                 sb.append(line);
             }
         }
+        int productId = 0;
+        int quantita = 0;
 
-        JsonObject json = JsonParser.parseString(sb.toString()).getAsJsonObject();
-        int productId = json.get("prodottoId").getAsInt();
-        int quantita = json.get("quantita").getAsInt();
+        try {
+            JsonObject json = JsonParser.parseString(sb.toString()).getAsJsonObject();
+
+            // Estraiamo in modo flessibile sia se arrivano come stringhe che come numeri
+            productId = (json.get("idProdotto").getAsInt());
+            quantita = (json.get("quantita").getAsInt());
+        } catch (Exception e) {
+            // Se il JSON è malformato, vuoto o contiene NaN, rispondi con un errore pulito (addio Errore 500!)
+            response.getWriter().write("{\"success\": false, \"message\": \"Dati JSON inviati non validi o mancanti.\"}");
+            return;
+        }
 
         HttpSession session = request.getSession();
 
@@ -48,7 +58,7 @@ public class Serv_AggiungiCarrello extends HttpServlet {
         List<Composizione> carrello;
 
         if (client == null) {
-            carrello = (List<Composizione>) session.getAttribute("guestCart");
+            carrello = (List<Composizione>) session.getAttribute("carrelloNoLog");
         } else {
             carrello = (List<Composizione>) session.getAttribute("carrello");
         }
@@ -80,7 +90,7 @@ public class Serv_AggiungiCarrello extends HttpServlet {
 
         // Salviamo nuovamente in sessione
         if (client == null) {
-            session.setAttribute("guestCart", carrello);
+            session.setAttribute("carrelloNoLog", carrello);
         } else {
             session.setAttribute("carrello", carrello);
         }

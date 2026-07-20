@@ -1,6 +1,5 @@
 package DAO;
 
-import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +8,6 @@ import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
-import com.mysql.cj.jdbc.MysqlDataSource;
 import model.Prodotto;
 
 public class DaoProdotto {

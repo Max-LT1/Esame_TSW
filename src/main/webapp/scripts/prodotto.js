@@ -3,7 +3,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const body = document.body;
     const contextPath = body.dataset.contextPath || "";
-    const prodottoId = Number.parseInt(body.dataset.productId, 10);
+    const idProdotto = Number.parseInt(body.dataset.productId, 10);
     const quantityInput = document.getElementById("productQuantity");
     const decreaseButton = document.getElementById("decreaseQuantity");
     const increaseButton = document.getElementById("increaseQuantity");
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    if (!Number.isInteger(prodottoId) || prodottoId <= 0) {
+    if (!Number.isInteger(idProdotto) || idProdotto <= 0) {
         mostraMessaggio("ID del prodotto non valido.", true);
         addToCartButton.disabled = true;
         return;
@@ -70,29 +70,33 @@ document.addEventListener("DOMContentLoaded", () => {
         const quantita = normalizzaQuantita(quantityInput.value);
         quantityInput.value = quantita;
 
+        const isPresent = addToCartButton.dataset.inCart ==="true";
         impostaCaricamento(true);
         mostraMessaggio("");
 
         try {
-            const risposta = await inviaJson(endpointAggiunta, {
-                prodottoId, quantita
-            });
-
-            if (risposta.success !== true) {
-                throw new Error(risposta.message || "Impossibile aggiungere il prodotto.");
+            let risposta;
+            if(isPresent){
+                risposta = await inviaJson(endpointAggiornamento, {prodottoId: idProdotto, quantita: quantita});
+            }else{
+                risposta = await inviaJson(endpointAggiunta, {idProdotto: idProdotto, quantita: quantita});
             }
-
+            if(risposta.success !== true){
+                throw new Error(risposta.message);
+            }
             const carrello = await caricaCarrelloDallaSessione();
 
-            mostraMessaggio(quantita === 1 ? "Prodotto aggiunto al carrello." : `${quantita} unità aggiunte al carrello.`, false);
-
-            if (carrello) {
+            if(isPresent){
+                mostraMessaggio("Carrello Aggiornato", false);
+            }else{
+                mostraMessaggio( "Aggiunto al carrello", false);
+            }
+            if(carrello){
                 impostaQuantitaProdottoCorrente(carrello);
             }
-
-        } catch (errore) {
-            console.error("Errore aggiunta carrello:", errore);
-            mostraMessaggio(errore.message || "Impossibile aggiungere il prodotto.", true);
+        }catch (errore){
+            console.error("Errore nel carrello: ", errore);
+            mostraMessaggio(errore.message || "Impossibile completare l'operazione.", true);
         } finally {
             impostaCaricamento(false);
         }
@@ -155,7 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function impostaQuantitaProdottoCorrente(carrello) {
         const articoli = Array.isArray(carrello.articoli) ? carrello.articoli : [];
-        const articoloCorrente = articoli.find(articolo => Number(articolo.idProdotto) === prodottoId);
+        const articoloCorrente = articoli.find(articolo => Number(articolo.idProdotto) === idProdotto);
 
         if (articoloCorrente) {
             quantityInput.value = normalizzaQuantita(articoloCorrente.quantita);

@@ -83,12 +83,12 @@
                         int quantita = composizioni.get(i).getQuantita_prodotto();
                         BigDecimal subtotal = prodotto.getPrezzo().multiply(BigDecimal.valueOf(quantita));
             %>
-            <article class="cart-item" data-cart-item data-product-id="1" data-price="49.90">
+            <article class="cart-item" data-cart-item data-product-id="<%=prodotto.getIdProdotto()%>" data-price="<%=prodotto.getPrezzo()%>">
                 <a href="product.jsp?id=<%=prodotto.getIdProdotto()%>" class="cart-item-image-link">
-                    <img class="cart-item-image" src="<%=prodotto.getPath_immagine()%>" alt="Spada lunga del cavaliere">
+                    <img class="cart-item-image" src="<%=prodotto.getPath_immagine()%>" alt="<%=prodotto.getNomeProdotto()%>">
                 </a>
                 <div class="cart-item-info">
-                    <a href="product.jsp?id=1" class="cart-item-name">
+                    <a href="product.jsp?id=<%=prodotto.getIdProdotto()%>" class="cart-item-name">
                         <h3><%=prodotto.getNomeProdotto()%></h3>
                     </a>
                     <p class="cart-item-description"><%=prodotto.getDescrizione()%></p>

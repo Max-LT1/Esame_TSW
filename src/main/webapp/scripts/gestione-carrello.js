@@ -1,11 +1,9 @@
-function aggiungiAlCarrello(idPianta) {
-    // Prepariamo i parametri da inviare (simuliamo un piccolo form invisibile)
+function aggiungiAlCarrello(idProdotto) {
     const params = new URLSearchParams();
-    params.append('action', 'aggiungi');
-    params.append('id', idPianta);
+    params.append('id', idProdotto);
 
     // Facciamo la chiamata alla Servlet in modo invisibile
-    fetch('GestioneCarrello', {
+    fetch('Serv_AggiungiCarrello', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -16,11 +14,8 @@ function aggiungiAlCarrello(idPianta) {
         .then(data => {
             if (data.success) {
                 // Successo! Mostriamo un feedback all'utente
-                alert("🌱 Pianta aggiunta con successo!\nTotale articoli nel carrello: " + data.numeroArticoli);
+                alert("Aggiunta con successo: " + data.numeroArticoli);
 
-                // BONUS: Se hai un pallino col numero sul carrello nella navbar, si aggiornerebbe così:
-                // let badge = document.getElementById('cart-badge');
-                // if(badge) badge.innerText = data.numeroArticoli;
             } else {
                 // La Servlet ha restituito un errore (es. pianta non trovata)
                 alert("⚠️ Errore: " + data.errore);

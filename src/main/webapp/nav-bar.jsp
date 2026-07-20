@@ -20,7 +20,7 @@
     </nav>
     <div class="user-area">
         <span class="icon-user" id="user-icon" role="button" tabindex="0" aria-label="Apri area utente">👤</span>
-        <a href="<%= ctx %>/cart.jsp" class="navbar-icon cart-link" aria-label="Apri il carrello">
+        <a href="<%= ctx %>/carrelloServ" class="navbar-icon cart-link" aria-label="Apri il carrello">
             <span class="icon-cart" id="cart-icon">🛒</span>
         </a>
     </div>
