@@ -12,7 +12,7 @@
         <button class="search-button" type="submit" aria-label="Avvia ricerca">Cerca</button>
     </form>
     <nav class="nav-links">
-        <a href="<%= ctx %>/index.jsp" class="navbar-logo">Home</a>
+        <a href="<%= ctx %>/HomePage" class="navbar-logo">Home</a>
         <a href="<%= ctx %>/ContextCheck?categoria=armi">Armi</a>
         <a href="<%= ctx %>/ContextCheck?categoria=armature">Armature</a>
         <a href="<%= ctx %>/ContextCheck?categoria=scudi">Scudi</a>

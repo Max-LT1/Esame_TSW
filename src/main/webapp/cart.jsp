@@ -184,7 +184,7 @@
                 Esplora la forgia e aggiungi nuovi oggetti
                 al tuo equipaggiamento.
             </p>
-            <a href="index.jsp" class="primary-button">Torna alla Home</a>
+            <a href="HomePage" class="primary-button">Torna alla Home</a>
         </div>
         <div id="cartSummary" class="cart-summary">
             <div class="summary-information">
