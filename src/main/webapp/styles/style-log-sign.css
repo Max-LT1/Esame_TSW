@@ -55,6 +55,7 @@ button {
 .auth-card {
     width: 100%;
     max-width: 650px;
+    margin-top: 50px;
     padding: 36px;
     overflow: hidden;
     border: 1px solid rgba(199, 167, 108, 0.22);
@@ -94,7 +95,7 @@ button {
     text-align: center;
 }
 
-form {
+.input-form {
     display: flex;
     flex-direction: column;
     gap: 18px;
