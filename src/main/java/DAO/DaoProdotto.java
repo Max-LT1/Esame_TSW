@@ -14,7 +14,7 @@ import model.Prodotto;
 public class DaoProdotto {
     private DataSource dataSource;
 
-    public void setDataSource(DataSource dataSource) {
+    public DaoProdotto(DataSource dataSource) {
         this.dataSource = dataSource;
     }
     //creare un prodotto
