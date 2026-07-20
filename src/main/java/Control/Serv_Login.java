@@ -3,6 +3,7 @@ package Control;
 import DAO.ClienteDAO;
 import DAO.DBConnection;
 import DAO.DaoComposizione;
+import com.password4j.Password;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -19,8 +20,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+
 @WebServlet("/loginServ")
 public class Serv_Login extends HttpServlet {
+
     private ClienteDAO clienteDAO;
     private DataSource ds;
     private DaoComposizione daoComposizione;
@@ -35,17 +38,20 @@ public class Serv_Login extends HttpServlet {
         List<Composizione> carrelloItems = null;
 
         try {
-            cliente = clienteDAO.getClienteByUsernamePassword(clientename, password);
+            cliente = clienteDAO.getClienteByUsername(clientename);
+
+            if (cliente == null ||
+                    !Password.check(password, cliente.getPassword()).withArgon2()) {
+                cliente = null;
+            }
         } catch (SQLException e) {
             String errorMessage = "There was an error during the login, try again";
             response.sendError(500, errorMessage);
-
             return;
         }
 
 
         if (cliente != null) {
-
             try {
                 carrelloItems = daoComposizione.getComposizioniByUsernameAndEmail(cliente.getUsername(),
                         cliente.getEmail());
@@ -98,7 +104,6 @@ public class Serv_Login extends HttpServlet {
             // Redirect to a protected resource or home page
             response.sendRedirect("HomePage");
         } else {
-
             String errorMessage = "Username o password non validi";
             request.setAttribute("errorMessage", errorMessage);
             request.getRequestDispatcher("log-sign.jsp").forward(request, response);

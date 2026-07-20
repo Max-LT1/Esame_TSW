@@ -3,6 +3,7 @@ package Control;
 
 import DAO.ClienteDAO;
 import DAO.DBConnection;
+import com.password4j.Password;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -22,10 +23,9 @@ public class Serv_register extends HttpServlet {
     private DataSource dataSource;
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         Client client = new Client();
         client.setUsername(request.getParameter("username"));
-        client.setPassword(request.getParameter("password"));
+        client.setPassword(Password.hash(request.getParameter("password")).addRandomSalt().withArgon2().getResult());
         client.setEmail(request.getParameter("email"));
         client.setRuolo_cliente("cliente");
         client.setNome(request.getParameter("nome"));
