@@ -41,10 +41,18 @@ public class Serv_AggiornaCarrello extends HttpServlet {
         if(carrello != null){
             for(Composizione cartItem : carrello){
                 if(cartItem.getIdProdotto() == prodottoId){
-                    if(cartItem.getQuantita_prodotto() < 1){
-                        String errorMessage = "Invalid quanitity found, min 1, max 99";
-                        request.setAttribute("errorMessage", errorMessage);
-                        request.getRequestDispatcher("/cart.jsp").forward(request, response);
+                    if (quantita < 1 || quantita > 99) {
+                        response.setStatus(
+                                HttpServletResponse.SC_BAD_REQUEST
+                        );
+                        response.setContentType(
+                                "application/json"
+                        );
+                        response.setCharacterEncoding("UTF-8");
+                        response.getWriter().write(
+                                "{\"success\":false,\"message\":\"Quantità non valida\"}"
+                        );
+                        return;
                     }
                     cartItem.setQuantita_prodotto(quantita);
                     break;

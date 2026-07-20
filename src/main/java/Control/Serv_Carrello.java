@@ -2,7 +2,6 @@ package Control;
 
 
 import DAO.DBConnection;
-import DAO.DaoComposizione;
 import DAO.DaoProdotto;
 
 import com.google.gson.JsonArray;
@@ -60,11 +59,12 @@ public class Serv_Carrello extends HttpServlet {
                     }
                     JsonObject composizioneJson = new JsonObject();
                     composizioneJson.addProperty("path_immagine", product.getPath_immagine());
-                    composizioneJson.addProperty("nomeProdotto", product.getIdProdotto());
+                    composizioneJson.addProperty("idProdotto", product.getIdProdotto());
+                    composizioneJson.addProperty("nomeProdotto", product.getNomeProdotto());
                     composizioneJson.addProperty("descrizione", product.getDescrizione());
                     composizioneJson.addProperty("prezzo", product.getPrezzo());
                     composizioneJson.addProperty("quantity", c.getQuantita_prodotto());
-                    prezzoTotale.add(prezzoTotale.add(product.getPrezzo().multiply(BigDecimal.valueOf(c.getQuantita_prodotto()))));
+                    prezzoTotale = prezzoTotale.add(prezzoTotale.add(product.getPrezzo().multiply(BigDecimal.valueOf(c.getQuantita_prodotto()))));
                     composizioniJson.add(composizioneJson);
                 } catch (SQLException | NullPointerException e) {
                     String err = "Errore nel caricamento del carrello";

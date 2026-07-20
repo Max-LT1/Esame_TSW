@@ -22,6 +22,7 @@ public class Serv_AggiungiCarrello extends HttpServlet {
     private static final long serialVersionUID = 6L;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         StringBuilder sb = new StringBuilder();
         String line;
         try (BufferedReader reader = request.getReader()) {
@@ -37,17 +38,17 @@ public class Serv_AggiungiCarrello extends HttpServlet {
         HttpSession session = request.getSession();
 
         if (quantita <= 0 || quantita > 99) {
-            String errorMessage = "quantita non valida";
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, errorMessage);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write("{\"success\": false, \"message\": \"Quantità non valida\"}");
             return;
         }
 
         Client client = (Client) session.getAttribute("cliente");
-
-        List<Composizione> carrello = null;
+        List<Composizione> carrello;
 
         if (client == null) {
-            carrello = (List<Composizione>) session.getAttribute("carrelloNoLog");
+            carrello = (List<Composizione>) session.getAttribute("guestCart");
         } else {
             carrello = (List<Composizione>) session.getAttribute("carrello");
         }
@@ -60,6 +61,7 @@ public class Serv_AggiungiCarrello extends HttpServlet {
         for (Composizione composizione : carrello) {
             if (composizione.getIdProdotto() == productId) {
                 productExists = true;
+
                 composizione.setQuantita_prodotto(quantita);
                 break;
             }
@@ -76,12 +78,14 @@ public class Serv_AggiungiCarrello extends HttpServlet {
             carrello.add(newComposizione);
         }
 
+        // Salviamo nuovamente in sessione
         if (client == null) {
-            session.setAttribute("carrelloNoLog", carrello);
+            session.setAttribute("guestCart", carrello);
         } else {
             session.setAttribute("carrello", carrello);
         }
 
+        // Ritorna una risposta JSON di successo come si aspetta il JS (.then(data => data.success))
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write("{\"success\": true}");
