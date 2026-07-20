@@ -82,6 +82,7 @@
                 </div>
                 <% }
                     }%>
+            </div>
             <button class="arrow right">&#9654;</button>
         </div>
     </section>
