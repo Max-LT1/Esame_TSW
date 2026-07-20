@@ -89,8 +89,9 @@ public class Serv_product extends HttpServlet {
 
     private void singleItem(HttpServletRequest req, HttpServletResponse resp)
             throws SQLException, ServletException, IOException {
-        String s = req.getAttribute("NomeProdotto").toString();
-        Prodotto p = daoProdotto.getProdottoByNome(s);
+        int id = Integer.parseInt(req.getParameter("id"));
+        Prodotto p = daoProdotto.getProdottoById(id);
         req.setAttribute("prodotto", p);
+        req.getRequestDispatcher("/product.jsp").forward(req, resp);
     }
 }

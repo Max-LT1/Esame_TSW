@@ -156,7 +156,7 @@
         %>
 
         <article class="codex-product" data-id="<%= escapeHtml(id) %>" data-tipo="<%= escapeHtml(tipo) %>">
-            <a class="product-link" href="<%= contextPath %>/prodotto?id=<%= encodeUrl(id) %>" aria-label="Apri <%= escapeHtml(nome) %>">
+            <a class="product-link" href="<%= contextPath %>/SingleItem?id=<%= id %>" aria-label="Apri <%= escapeHtml(nome) %>">
                 <div class="product-image-wrapper">
                     <img class="product-image" src="<%= contextPath %>/<%= escapeHtml(immagine) %>" alt="<%= escapeHtml(nome) %>" loading="lazy" onerror="this.onerror=null; this.src='<%= contextPath %>/images/placeholder-product.png';">
                     <span class="price-badge"><%= escapeHtml(prezzoFormattato) %></span>
