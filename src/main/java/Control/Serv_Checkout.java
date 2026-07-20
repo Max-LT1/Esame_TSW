@@ -39,7 +39,7 @@ public class Serv_Checkout extends HttpServlet {
         if (cliente == null || !sessionToken.equals(clientToken)) {
             String errorMessage = "You are not logged in, please login";
             request.setAttribute("errorMessage", errorMessage);
-            request.getRequestDispatcher("Login.jsp").forward(request, response);
+            request.getRequestDispatcher("log-sign.jsp").forward(request, response);
             return;
         }
         if (cliente.getNome() == null || !cliente.getNome().matches("^[a-zA-Z ]{1,30}$")) {
@@ -97,7 +97,7 @@ public class Serv_Checkout extends HttpServlet {
         if (!dataScadenzaString.matches("^\\d{4}-\\d{2}-\\d{2}$")) {
             String errorMessage = "La data di scadenza deve essere nel formato corretto (YYYY-MM-DD).";
             request.setAttribute("errorMessage", errorMessage);
-            request.getRequestDispatcher("Cart.jsp").forward(request, response);
+            request.getRequestDispatcher("cart.jsp").forward(request, response);
             return;
         }
 
@@ -105,7 +105,7 @@ public class Serv_Checkout extends HttpServlet {
         if (titolareConto.trim().isEmpty()) {
             String errorMessage = "Inserisci il titolare del conto.";
             request.setAttribute("errorMessage", errorMessage);
-            request.getRequestDispatcher("Cart.jsp").forward(request, response);
+            request.getRequestDispatcher("cart.jsp").forward(request, response);
             return;
         }
 
