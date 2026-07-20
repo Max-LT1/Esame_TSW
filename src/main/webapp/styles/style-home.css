@@ -63,6 +63,7 @@
     overflow: hidden;
     scroll-behavior: smooth;
     width: 85.8%;
+    min-width: 85.8%;
     padding-left: 45px;
 }
 
