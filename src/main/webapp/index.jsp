@@ -1,4 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="java.util.List"%>
+<%@ page import="model.Prodotto"%>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -15,8 +17,6 @@
 <body>
 
 <jsp:include page="nav-bar.jsp" />
-<%@ page import="java.util.List"%>
-<%@ page import="model.Prodotto"%>
 
 <main class="content">
     <section class="group">
@@ -49,7 +49,7 @@
                         </div>
                     </div>
                 </a>
-                <% }
+                <%      }
                     }%>
             </div>
 

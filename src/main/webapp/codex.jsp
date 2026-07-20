@@ -145,16 +145,10 @@
                                 : "Non specificato";
 
                 String immagine =
-                        prodotto.getPath_immagine() != null
-                                ? prodotto.getPath_immagine()
-                                : "images/placeholder-product.png";
+                        prodotto.getPath_immagine() != null ? prodotto.getPath_immagine() : "images/placeholder-product.png";
 
-                String prezzoFormattato =
-                        formatoPrezzo.format(
-                                prodotto.getPrezzo()
-                        );
+                String prezzoFormattato = formatoPrezzo.format(prodotto.getPrezzo());
         %>
-
         <article class="codex-product" data-id="<%= escapeHtml(id) %>" data-tipo="<%= escapeHtml(tipo) %>">
             <a class="product-link" href="<%= contextPath %>/SingleItem?id=<%= id %>" aria-label="Apri <%= escapeHtml(nome) %>">
                 <div class="product-image-wrapper">
