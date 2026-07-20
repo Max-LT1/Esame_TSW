@@ -15,93 +15,39 @@
 <body>
 
 <jsp:include page="nav-bar.jsp" />
+<%@ page import="java.util.List"%>
+<%@ page import="model.Prodotto"%>
 
 <main class="content">
     <section class="group">
         <h2>Novità</h2>
+
         <div class="carousel-container">
             <button class="arrow left">&#9664;</button>
             <div class="carousel" id="carousel1">
+                <%
+                    List<Prodotto> prodottiNuovi = (List<Prodotto>) request.getAttribute("NuoviProdotti");
+                %>
+                <%
+                    if (prodottiNuovi == null || prodottiNuovi.isEmpty()) {
+                %>
+                <p>Nessun prodotto disponibile</p>
+                <%
+                } else {
+                %>
+                <%
+                    for (Prodotto prodotto : prodottiNuovi) {
+                %>
                 <div class="product tall skew" >
-                    <div class="product-content">
-                        Prodotto 1
-                    </div>
                     <div class="product-name">
-                        Spada del Drago
+                        <%= prodotto.getNomeProdotto()%>
+                    </div>
+                    <div class="product-price">
+                        <%= prodotto.getPrezzo()%>>
                     </div>
                 </div>
-                <div class="product tall skew">
-                    <div class="product-content">
-                        Prodotto 1
-                    </div>
-                    <div class="product-name">
-                        Spada del Drago
-                    </div>
-                </div>
-                <div class="product tall skew">
-                    <div class="product-content">
-                        Prodotto 1
-                    </div>
-                    <div class="product-name">
-                        Spada del Drago
-                    </div>
-                </div>
-                <div class="product tall skew">
-                    <div class="product-content">
-                        Prodotto 1
-                    </div>
-                    <div class="product-name">
-                        Spada del Drago
-                    </div>
-                </div>
-                <div class="product tall skew">
-                    <div class="product-content">
-                        Prodotto 1
-                    </div>
-                    <div class="product-name">
-                        Spada del Drago
-                    </div>
-                </div>
-                <div class="product tall skew">
-                    <div class="product-content">
-                        Prodotto 1
-                    </div>
-                    <div class="product-name">
-                        Spada del Drago
-                    </div>
-                </div>
-                <div class="product tall skew">
-                    <div class="product-content">
-                        Prodotto 1
-                    </div>
-                    <div class="product-name">
-                        Spada del Drago
-                    </div>
-                </div>
-                <div class="product tall skew">
-                    <div class="product-content">
-                        Prodotto 1
-                    </div>
-                    <div class="product-name">
-                        Spada del Drago
-                    </div>
-                </div>
-                <div class="product tall skew">
-                    <div class="product-content">
-                        Prodotto 1
-                    </div>
-                    <div class="product-name">
-                        Spada del Drago
-                    </div>
-                </div>
-                <div class="product tall skew">
-                    <div class="product-content">
-                        Prodotto 1
-                    </div>
-                    <div class="product-name">
-                        Spada del Drago
-                    </div>
-                </div>
+                <% }
+                    }%>
             </div>
 
             <button class="arrow right">&#9654;</button>
@@ -113,88 +59,29 @@
         <div class="carousel-container">
             <button class="arrow left">&#9664;</button>
             <div class="carousel" id="carousel2">
+                <%
+                    List<Prodotto> prodottiScontati = (List<Prodotto>) request.getAttribute("ListaSconti");
+                %>
+                <%
+                    if (prodottiScontati == null || prodottiScontati.isEmpty()) {
+                %>
+                <p>Nessun prodotto disponibile</p>
+                <%
+                } else {
+                %>
+                <%
+                    for (Prodotto prodotto : prodottiScontati) {
+                %>
                 <div class="product tall skew">
-                    <div class="product-content">
-                        Prodotto 1
-                    </div>
                     <div class="product-name">
-                        Spada del Drago
+                        <%= prodotto.getNomeProdotto()%>
+                    </div>
+                    <div class="product-prezzo">
+                        <%= prodotto.getPrezzo()%>
                     </div>
                 </div>
-                <div class="product tall skew">
-                    <div class="product-content">
-                        Prodotto 1
-                    </div>
-                    <div class="product-name">
-                        Spada del Drago
-                    </div>
-                </div>
-                <div class="product tall skew">
-                    <div class="product-content">
-                        Prodotto 1
-                    </div>
-                    <div class="product-name">
-                        Spada del Drago
-                    </div>
-                </div>
-                <div class="product tall skew">
-                    <div class="product-content">
-                        Prodotto 1
-                    </div>
-                    <div class="product-name">
-                        Spada del Drago
-                    </div>
-                </div>
-                <div class="product tall skew">
-                    <div class="product-content">
-                        Prodotto 1
-                    </div>
-                    <div class="product-name">
-                        Spada del Drago
-                    </div>
-                </div>
-                <div class="product tall skew">
-                    <div class="product-content">
-                        Prodotto 1
-                    </div>
-                    <div class="product-name">
-                        Spada del Drago
-                    </div>
-                </div>
-                <div class="product tall skew">
-                    <div class="product-content">
-                        Prodotto 1
-                    </div>
-                    <div class="product-name">
-                        Spada del Drago
-                    </div>
-                </div>
-                <div class="product tall skew">
-                    <div class="product-content">
-                        Prodotto 1
-                    </div>
-                    <div class="product-name">
-                        Spada del Drago
-                    </div>
-                </div>
-                <div class="product tall skew">
-                    <div class="product-content">
-                        Prodotto 1
-                    </div>
-                    <div class="product-name">
-                        Spada del Drago
-                    </div>
-                </div>
-                <div class="product tall skew">
-                    <div class="product-content">
-                        Prodotto 1
-                    </div>
-                    <div class="product-name">
-                        Spada del Drago
-                    </div>
-                </div>
-            </div>
-
+                <% }
+                    }%>
             <button class="arrow right">&#9654;</button>
         </div>
     </section>
