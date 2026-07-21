@@ -64,9 +64,8 @@
                 } else {
                     composizioni = (List<Composizione>) session.getAttribute("carrello");
                 }
-                if (composizioni == null || composizioni.isEmpty()) {
             %>
-            <div id="emptyCart" class="empty-cart">
+            <div id="emptyCart" class="empty-cart hidden">
                 <div class="empty-cart-icon">◇</div>
                 <h2>Il tuo carrello è vuoto</h2>
                 <p>
@@ -75,8 +74,7 @@
                 </p>
                 <a href="HomePage" class="primary-button">Torna alla Home</a>
             </div>
-            <%
-                } else {
+            <% if (composizioni != null && !composizioni.isEmpty()) {
                     for (int i = 0; i < composizioni.size(); i++) {
                         JsonArray cartItemsJson = new JsonParser().parse(request.getAttribute("composizioniJson").toString()).getAsJsonArray();
                         Prodotto prodotto = new Gson().fromJson(cartItemsJson.get(i), Prodotto.class);
